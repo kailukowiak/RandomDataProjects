@@ -29,6 +29,13 @@ avgAgeStart = df.StartOfRelationship.mean()
 
 def createTrace():
     traceList = []
+    halfPlus7 = go.Scatter(
+        x=X,
+        y=jdAge/2+7,
+        name='Half His Age Plus 7y',
+        fill="tozeroy",
+        line=dict(color=('rgb(205, 12, 24)')))
+    traceList.append(halfPlus7)
     for i in range(df.shape[0]):
         tempDF = df.iloc[i]
         soAgeDiff = tempDF.AgeDiff
@@ -48,6 +55,7 @@ def createTrace():
         name='Johnny Depp',
     )
     traceList.append(traceJD)
+
     return traceList
         
 test = createTrace()
@@ -56,7 +64,10 @@ layout=go.Layout(title="Jonny Depp's Significant Others",
                  xaxis= dict(title='Year',
                              fixedrange=True),
                  yaxis=dict(title='Age',
-                            fixedrange=True))
+                            fixedrange=True),
+                 autosize=False,
+                 width=1000,
+                 height=600,)
                  
 figurePlot = go.Figure(data=test, layout=layout)
 py.plot(figurePlot, filename = "Johnny-Depps-Love-Interests")
