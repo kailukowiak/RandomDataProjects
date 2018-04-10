@@ -1,9 +1,15 @@
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
-from plotly.offline import download_plotlyjs, plot, iplot
+#from plotly.offline import plot
+import config
+import plotly
+import plotly.plotly as py
 
 
+# user name setup
+#plotly.tools.set_credentials_file(username='kaiser_xc', api_key='rn4jGIeqkYc4oCOM7ge3')
+plotly.tools.set_credentials_file(username=config.user_name, api_key=config.api_key)
 # Data from here: https://bodyheightweight.com/johnny-depp-love-life/
 df = pd.read_csv('data.csv')
 
@@ -13,10 +19,10 @@ df['AgeDiff'] = jdDOB-df.DOB # Difference between JD and SO
 print(df)
 
 jdFirst = df.StartOfRelationship.min()-jdDOB
-jdLast = df.EndOfRelationship.max()-jdDOB
+jdLast = df.EndOfRelationship.max()-jdDOB+1
 
 jdAge = np.arange(jdFirst, jdLast)
-X = np.arange(df.StartOfRelationship.min(), df.EndOfRelationship.max())
+X = np.arange(df.StartOfRelationship.min(), df.EndOfRelationship.max()+1)
 nrow = df.shape[0]
 avgAgeStart = df.StartOfRelationship.mean()
 
@@ -46,5 +52,12 @@ def createTrace():
         
 test = createTrace()
 
-plot(test)
-print(mask)
+layout=go.Layout(title="Jonny Depp's Significant Others",
+                 xaxis= dict(title='Year',
+                             fixedrange=True),
+                 yaxis=dict(title='Age',
+                            fixedrange=True))
+                 
+figurePlot = go.Figure(data=test, layout=layout)
+py.plot(figurePlot, filename = "Johnny-Depps-Love-Interests")
+#print(mask)
